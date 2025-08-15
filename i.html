@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Independence Day Celebration</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+  }
+
+  .container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+  }
+
+  /* Long Pole */
+  .pole {
+    width: 10px;
+    height: 300px;
+    background: #555;
+    position: absolute;
+    left: -200px;
+    top: 20%;
+    animation: movePole 3s forwards;
+  }
+
+  /* Flag */
+  .flag {
+    width: 180px;
+    height: 120px;
+    position: absolute;
+    top: 0;
+    left: 10px;
+  }
+
+  .flag-stripe {
+    height: 40px;
+    width: 100%;
+  }
+
+  .saffron { background: #FF9933; }
+  .white { background: #FFFFFF; position: relative; }
+  .green { background: #138808; }
+
+  /* Ashoka Chakra */
+  .chakra {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #000080;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 70px;
+  }
+
+  .chakra-line {
+    position: absolute;
+    width: 2px;
+    height: 20px;
+    background: #000080;
+    top: 0;
+    left: 50%;
+    transform-origin: bottom center;
+  }
+
+  @keyframes movePole {
+    to { left: calc(50% - 90px); }
+  }
+
+  /* Message */
+  .message {
+    color: #fff;
+    font-size: 3em;
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    top: 60%;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 2s, transform 2s;
+  }
+
+  .message.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Fireworks */
+  .firework {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  @keyframes burst {
+    0% { transform: translate(0,0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--x), var(--y)) scale(0.5); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="pole">
+    <div class="flag">
+      <div class="flag-stripe saffron"></div>
+      <div class="flag-stripe white">
+        <div class="chakra" id="chakra"></div>
+      </div>
+      <div class="flag-stripe green"></div>
+    </div>
+  </div>
+  <div class="message" id="message">Happy Independence Day</div>
+</div>
+
+<script>
+  const message = document.getElementById('message');
+  const chakra = document.getElementById('chakra');
+  for(let i=0; i<24; i++){
+    let line = document.createElement('div');
+    line.classList.add('chakra-line');
+    line.style.transform = `rotate(${i*15}deg)`;
+    chakra.appendChild(line);
+  }
+  // Show message after flag reaches center
+  setTimeout(() => {
+    message.classList.add('show');
+    // Fireworks after message
+    setTimeout(() => {
+      launchFireworks();
+    }, 2000);
+  }, 3000);
+// Fireworks function with particles
+  function launchFireworks() {
+    const colors = ["red", "yellow", "blue", "green", "orange", "pink", "purple", "white"]; // include white
+
+    for(let i=0; i<25; i++){ // 25 fireworks
+      let x = Math.random() * window.innerWidth * 0.9 + 50;
+      let y = Math.random() * window.innerHeight * 0.5 + 50;
+
+      for(let j=0; j<60; j++){ // 60 particles per firework
+        let particle = document.createElement('div');
+        particle.classList.add('firework');
+
+        // Randomly choose color, more chance for white balls
+        particle.style.background = Math.random() < 0.2 ? "white" : colors[Math.floor(Math.random()*colors.length)];
+
+        particle.style.left = x + 'px';
+        particle.style.top = y + 'px';
+        let angle = Math.random() * 2 * Math.PI;
+        let distance = Math.random() * 150 + 50;
+        let dx = Math.cos(angle) * distance + 'px';
+        let dy = Math.sin(angle) * distance + 'px';
+        particle.style.setProperty('--x', dx);
+        particle.style.setProperty('--y', dy);
+        particle.style.animation = `burst 1s forwards`;
+        document.body.appendChild(particle);
+
+        // Remove particle after animation
+        setTimeout(() => particle.remove(), 1000);
+      }
+    }
+
+    // Repeat fireworks every 2 seconds
+    setTimeout(launchFireworks, 2000);
+  }
+</script>
+</body>
+</html>
+
+  
