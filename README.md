@@ -10,7 +10,7 @@ A festive animation celebrating India's Independence Day using HTML, CSS, and Ja
 ## How to View
 
 1. Clone or download this repository.
-2. Open `index.html` in your browser.
+2. Open `i.html` in your browser.
 
 ## Technologies Used
 
